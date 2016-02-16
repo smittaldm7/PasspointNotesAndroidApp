@@ -1,0 +1,565 @@
+Install ADT Plugin by using the appropriate URL and using 
+Help/Install new software
+There are 2 things:
+	Developer Tools - for developing Android using Java 
+	NDK Plugins - for developing Android using native languages - C, C++   (not needed) 
+
+After installing restart eclipse. When you open Eclipse again, open it using
+Run as administrator.
+
+Install latest Android API.
+Install Android API that is currently present on most phones.
+
+
+
+Create new Emulator
+Go to Window/Android Virtual Device Manager and create a new device.
+Select the Android API level you want. You can select the level you want to target the applciation to
+for example
+-Android 4.4.2 or API level9
+-Android 6.0 or API level 23 
+You have to install System image for whichever version of Android you are planning to use which will be 
+ARM and Intel. This is the CPU and will have to be selected while creating an emulator.
+
+
+Hello World
+Create new "Android Application Project"
+Application name - name that will appear to users in Play Store
+Project Name - name of Project in Eclipse
+package name - Your application needs to have a unique package name in the play store
+				naming convention is com.website/brand name.android.appname
+				
+Select the Android API level. 
+Select the minimum required Android API level that the application can run on.
+Decide the name for the activity.
+Run as Android Application.
+------------------------------------------------------
+There are 1 or more activities in an android application. An activity is basically a screen.
+
+There is mainactivity.java in the src folder that has an onCreate method.
+In this onCreate method setContentView method decides how the activity screen will look like.
+
+The R.layout.activity_main has a 
+-corresponding constant in gen/R.java.
+	This is a auto generated file that need not be tampered with. Maybe it uses this constant to identify the 
+	corresponding XML file.
+-corresponding XML in res/layout/activity_main.xml
+	This is the file that decides the layout of the activity page. 
+	And it has one or more View elements and ViewGroup elements. 
+	The View elements could correspond to a button or a text area or a clock or a map.
+	The ViewGroup elements like RaletiveLayout or LinearLayout group together View elements which can be
+	made to appear a certain way.
+	A View element has attributes specifying details of how the View element will appear.
+	The details of the attribute can be found in the XML attribute documentation for that View element.
+
+------------------------------------------------------
+Creating an Edit Text window	
+Linear Layout the android:orientation attribute specifies how the View elements in this view group should
+be stacked i.e. vertically or horizontally.
+
+The android:weight attribute specifies the ratio of spaces that the View elements should take.
+Say, one View element has a weight of "10" and other has weight of "20", then they will be in the ratio
+then the first view element will take 1/3rd of the space and the second element will take 2/3rds of the place.
+
+---------------------------------------------------
+To make one View element take the remaining space of the view group, the following is done:
+	specify value of "0dp" (device independent pixels) for android:height
+	for android:weight specify value of "1". 
+The android weight element is the one that specifies how much space is taken, even if you specify some other 
+for the android:height attribute.
+We specify a value of in dp instead of "match_parent" or something of that sort to save android an extra 
+calculation.
+	
+------------------------------------------------
+The android:id attribute is used to specify an id for the View which can later be used by tha activity java 
+file to get it.
+
+it is specified in the format @+id/name. 
+The + sign specifies that it is being created now. A constant get created in the R.java file.
+
+When it is used in the java layer/activity.java file to get the View using findViewById,
+it is used like findViewById(R.id.name);
+
+When it is used in the XML layer, it is accessed  in the follwing form @id/name
+--------------------------------------------------------------------
+In the addSaveButtonListener method we get the Save button View object using the findViewByID, cast to sub type
+ Button and then set a listener on it. A new onClickLsitener object is created using an anonymous class 
+(which is a definition of a class that implements a interface as well as an instantiation of an object of that
+class).(The interface is View.OnClickListener)
+The code inside the onClick method of the definition is what will get executed once the button is clicked.
+  
+  
+
+--------------------------------------------- 
+
+You can create a log entry using Log.d(tag, text)
+It will appear in the DDMS perspective.
+
+----------------------------------------------
+Writing to a file in internal storage.
+we use the openFileOutput(filename, mode) method 
+that returns a n object of type FileOutputStream.
+ context.mode_private means it will only be readable by this application
+we use the write method of FileOutputStream class to write. It take an argument of bytes.
+
+we then close the FileOutputStream
+
+
+-----------------------------------------
+Reading from a file in internal storage
+call method openFileInput(filename) which returns object of type FileInputStream which we store in reference fis.
+An object of type DataInputStream is created with constructor argument of type FileInputStream i.e. fis.
+An object of type InputStreamReader is created with constructor argument of type DataInoutStream.
+An object of type BufferedReader is created with constructor argument of type InputStreamReader.
+
+With the help of BufferedReader the file can be read line by line.
+
+The lines are then appended to the EditText object that we get using the findViewById method.
+
+The FileInputStream is then closed
+
+----------------------------------------------------------
+Using String Resources / Localization
+It is a standard practice not to hard code string values and instead put them in a text file called a string resources 
+file, so that the application can be localized. To localize we can create separate string resource files for each
+language.
+The string resource file in Android is in res/values/strings.xml.
+We create an entry there and then use the identifier @String/save instead of a hard coded string in the appropriate place
+for example: android:hint in activity_main.xml for the Save Button string text.
+
+--------------------------------------------------------
+Creating a launcher icon
+we create icon images of sizes and put them in the following folders. They must have the same filename. 
+
+36*36 - drawable-ldpi 
+48*48 - drawable-mdpi
+72*72 - drawable-hdpi
+96*96 - drawable-xhdpi
+144*144 - drawable-xxhdpi
+
+To create images of different size GIMP can be used.
+
+When we put images in these folders constant get s created in R.java. This image can now be accessed in the java layer
+as R.drawable.filename and in the XML layer as @drawable/filename.
+
+The filename must be added to the android:icon attribute of the application element in the AndroidManifest.xml
+---------------------------------------
+Debugging on your phone
+Install Google USB driver in order to connect your phone to the computer so that you can install an application to your 
+phone.
+Enable USB debugging from Seetings/Developer options.
+Connect your phone with a USB cable.
+Now run your project and you will get an option to run it on your phone
+AndroidScreenCast is a software that can be installed if you want the screen of yourphone to appear on the computer.
+It is not required as such.
+
+
+
+------------------------------------
+Preferences
+There is a preferences file for each activity. accessed by getPreferences(MODE_PRIVATE)
+There is also a preferences file across activities. accessed by getSharedPreferences()
+
+These preference files contain a key and a value.
+
+We write a boolean value whose key is named "fileSaved" and then load the file at the launch of the app
+ depending on the value of "fileSaved" 
+
+
+All the strings not visible to user are initialized at the top of the Activity.java file
+
+------------------------------------------------
+creating a Toast Alert
+It is a auto disappearing alert
+Toast.makeText().show()
+can be used for error alerts
+
+---------------------------
+Creating Another Activity
+create it
+
+Setting it as main activity - in the android manifest, put the intent filter tag section in the new activity
+
+-----------------------------
+displaying images with the ImageView view
+create a new activity called ImageActivity or just change the title string from the activity create in previous section
+
+create a imageView view in the activity_image.xml
+
+in the android:src attribute of the ImageView element specify "@drawable/filename" where filename is without extension
+
+put an image in the drawable folder. Putting an image in this folder creates a constant in R.java which can now be accessed
+in the java layer as R.drawable.filenmae and in the XML layer as "@drawable/filename"
+
+
+------------------------------------------------
+R.java 
+is a static class that contains other static classes like id, string, drawable that contain static final variables
+or static constants.
+These constants correspond to images or strings or ids of View elements.
+They can be accessed in the java layer, for example, as R.id.passpoint_image to access the corresponding View elemnent
+or for example as @drawable/squirrel in the XML layer to access the icon image.
+
+-------------------------
+Getting Coordinates of an Image
+We get the ImageView object and then add a onTouchListener to it.
+using method setOnTOuchListener() which takes an argument of type that implements interface OnTouchListener.
+We create an object of such a type using an anonymous class.
+The interface has a declaration of method onTOuch that has to be implemented in the class implementing it.
+From the event which is a touch we get the coordinates using event.getX() and event.getY().
+HEre we just put the coordinated in a Log.d statement.
+-----------------------
+Alert Dialogs
+we create an alert dialog which needs a click from the user in order for it to go away.
+ImageActivity.java showPrompt method is for this
+
+we create a reference of AlertDialog.Builder a nested class of class AlertBuilder. This reference is called "builder".
+We pass the activity object in the constructor in the creation of a new AlertDialog.Builder object.
+we add a ok button which has a listener listening for a click. It does nothing on being clicked besides getting 
+rid of the alert dialog box.
+
+we set a title and a message using methods setTitle() and setMessage() of AlertDialog.Builder.
+
+We then create a reference of AlertDialog called "alert" and call method create() of AlertDialog.Builder. which returns 
+an object of type AlertDialog.
+
+we then say alert.show() which makes the alert dialog box appear
+
+------------------------------------------------------
+
+Observer Pattern -  
+
+We create a listener called PointCollecter that implements onTouchListener. The method onTouch gets invoked when a user 
+touches the image screen.
+ In this method we get the coordinates of the point touched.
+ 
+when 4 points have been touched by the user, we then want to pass these coordinates back to the ImageActivity class.
+
+Before we had created an anonymous class object. Using anonymous class it would have looked like  
+image.setOnTouchListener(new onTouchListener(){}) 
+
+but now since we have to send back data to the ImageActivity class from the onTouch() method,
+to keep things sane, a class that implements onTouchListener interface is created in a separate java file and 
+named PointCollector. 
+
+We create a reference and object of the PointCollector called "pointCollector" in ImageActivity.
+
+We then set this listener to the ImageView object "image" as follows 
+image.setOnTouchListener(pointCollector);
+
+
+FIRST STEP
+So we create a reference of type ImageActivity and and create a setter method for it.
+
+In the ImageActivity onCreate method , we call its setListener() method and pass the ImageActivity object.
+
+So now the PointCollector object has a reference of type ImageActivity pointing to the object of ImageActivity class.
+
+Now, we create a method in the ImageActivity class called pointCollect(List<Point> points) which takes an argument of 
+type List<point>.
+
+So, now to send the coordinates from the PointCollector object to ImageActivity we just call pointCollect(List<Point>
+ points) method using the reference of type ImageActivity pointing to the ImageActivity object. 
+
+SECOND STEP
+Now just a small incremental improvement onto already working code that will make no functional difference.
+So, now, to put it abstractly, the ImageActivity class to listens to the PointCollector class for when 4 points have been touched by the user. 
+We create an interface called PointCollectorListener and add declaration of the pointCollect method to it.
+Now we get the ImageActivity class to implements the PointCollectorListener interface.
+We can even create reference of PointCollecterListener interface instead of reference of ImageActivity in the PointCollector class.
+
+The listener class PointCollector becomes more general purpose. 
+We can use the listener class PointCollector in any class that implements PointCollector listener and not just in ImageActivity.
+
+It makes sense also to segregate this listening functionality into an interface. It is a good practice to segregate as many functionalities
+into interfaces. It makes the code more readable to have interfaces. You can see right at the top what functionalities a class has through which
+ interfaces it implements.
+
+Also, it is now written in the same way the OnTouchListener interface is written
+The OnTouchListener listens for screen touches and its method onTouch gets invoked each time the screen is touched.
+And the PointCollectorListener listens for when 4 point have been collected by the the onTouch Listener aka the PointCollector. The pointsCollected
+method is called when 4 points have been touched by the user.
+ 
+
+DATABASE
+Create a Database
+Android has SQLite database built in to it. So, it is not required to install another database, for example MySQL, and 
+and connect to it. 
+ 
+A class called Database that implements SQLiteOpenHelper.
+Unimplemented methods are the constructor Database() and methods onCreate()
+and onUpgrade().
+
+An object of type Database has to be created in the ImageActivity java file(the acticity from which the database is 
+to be accessed -read or written to). And in the creation statement we pass the the activity object using the this keyword.
+
+The constructor of the database class is called and an object of type database is created specific to this activity
+(or of this context).
+However the database has not been created or opened yet. It is not created or opened until the first database read or 
+write happens or more specifically when getReadableDatabase() or getWritableDatabase is called. 
+
+If the database hasn't been created then it gets created and the onCreate() gets called.
+If it has been created already through the execution of a previous query, a connection to the database is opened. 
+
+Order of events when the first query is executed of a particular database object.
+-Database object created
+Now first query is executed using this database object
+-Database is created
+-onCreate() is executed
+-first query is executed
+Now second query is executed
+-second query is executed
+
+
+-------------------------------------
+
+Adding Data to a Database
+a method called storePoints is created which will be called by the ImageActivity class.
+The SQLLiteDatabase object specific to writing (insert,delete, update)to a database is got using method getWritableDatabase() method.
+It is stored in a reference called "db". A connection is opened to the database for means of writing to it.
+
+At the end of the method we close this connection using method db.close().
+
+ContentValue object is used to store the values of different columns of a prospective row or table entry.
+ContentValues is part of a mechanism that allows us to write to the database in a way that uses wildcards which is a
+good practice. (it prevents SQL injection).
+
+for each point in the List<Point> object "points", we add values to the ContextValues object "values".
+we then write to the database using method db.insert(table, null, values).  It is a method of the SQLiteDatabase object.
+
+
+--------------------------------------
+ 
+Retrieving data from the database
+a method called getPoints is created that returns a List<Point> object.
+The SQLite object for reading(select) from a database is got using getReadableDatabase() method into a refernce named
+ "db".  A connection is now open to the database for means of reading from it.
+ 
+ At the end of the method we close this connection using method db.close().
+ 
+ a query is executed by means of the method db.rawQuery(sql, null) where sql contains the query string.
+ It is a method of the SQLiteDatabase object.
+ it returns an object of type Cursor. It is stored in a reference named "cursor".
+ 
+ cursor object points to a row or entry in the query result. IT begins by pointing to the row before the first row.
+ So, cursor.moveToNext() has to be called which moves the cursor position to the next row of the query result.
+ Also, it returns true if a row exists in that position and false if there doesn't.
+ 
+ we get the column values of the row the cursor points to using methods
+ cursor.getInt(column_index in result set) if the column is of INTEGER type.
+ or cursor.getString(column_index in result set) if the column is of a string type
+ 
+ Now, in a for loop we get the x and y values of each of the 4 points in the table and add them to a List<Point> object 
+ which is finally returned by the method.
+ 
+ This method in the Database.java file is called from the ImagaeActivity.java file temporarily from the pointsCollect()
+  method itself. And after retrieving the List<Point> object we display the gotten points in a log stateement.
+  
+ ---------------------------------------------------------------------
+ 
+ Asynchronous tasks:Creating Passpoints
+ 
+ As storing points in database takes some time, in this section it is attempted to do it asynchronously, which means 
+ it executes in a separate thread and finishes, while the execution of the main thread continues without waiting for it.
+ (If the main thread waited for it, it would just be synchronous and there would be no need for a parallel thread
+ and it would defeat the purpose of wanting to do it asynchronously)
+ 
+We create an alert while the points are being stored as database access takes some time. However it is pretty quick
+ here and to simulate a delay put a Thread.sleep(). When the databse write is complete we dismiss the alert.
+ 
+ 
+ 
+ ---------------------------------------
+ Asynchronously Verifying Passpoints
+ We reuse the pointCollector object.
+ We clear the the points object of type List<Point> after storing the points, so that after creating the 4 passpoints,
+ the counter for number of points that we use which is points.size() gets reset.
+
+Now when we touch 4 points it again goes to the pointsCollect method in ImagaACtivity.
+Here, we check whether passpoints have been saved or not by checking preferences.
+If they have been saved we verifyPoints(), else we savePoints().
+
+When the onCreate() method is called we show an alert prompt after checking preferences.
+If passpoints have already been set, we show verifyPassPoints prompt,
+else we show setPasspoints prompt.
+
+In the verify points we calculate the distance of the touchedPoints from the stored points.
+square of distance = square of xDiff *square of yDiff
+
+We decide that the maximum distance of the touched point from the saved points can be 50 pixels.
+we put this in a int final variable.
+If all points are within 50 pixels of the corresponding saved points then the the check has passed otherwise it fails
+
+IF the check fails we do nothing except clear the points object of type List<Point> in poincollector object
+ so that the user can try again.
+ 
+ If the check passes then, we show the MainActivity activity. Chagen activity using Intent object
+ and the startActivity() method.
+ -------------------------------------------
+ Intent
+ Intent i = new intetn(this,otheractivity.class)
+ startActivity(i);
+ -------------------------------------------
+ 
+ Supporting multiple screens
+ 
+ -density(dots per inch = dpi)
+ 	number of pixels per inch. Also referred to as Dots Per Inch (dpi). This is in 1 dimension.
+ 	6 types: 
+ 	Six generalized densities are:
+ 	ldpi 	120dpi
+ 	mdpi  	160 dpi
+ 	hdpi 	240 dpi
+ 	xhdpi 	360dpi
+ 	xxhdpi 	480 dpi
+ 	xxxhdpi 640 dpi
+ 
+ 	Moto G first gen is 326 dpi
+ 
+ -screen size
+ 	physical size of the screen measured as the screen diagonal
+ 	4 categories: (inches)
+ 	small 		2   - 3.5 
+ 	medium 		3   - 4.5
+	large 		4.1 - 7
+	extra large 7   - 10.5
+ 	
+ 	Moto G first Gen is 4.5 inch
+ 	
+ -density-independent pixel(dp)
+ 	Is equivalent to 1 pixel on a 160dpi (medium density)screen. This is in 1 dimension.
+ 	1dp = 1/160th inch.
+ 	For 1 dp, the equivalent number of pixels for different density(dpi) screens is different.
+ 	
+ 	This is given by the formula 	
+ 	1dp = dpi/160 pixels
+ 	
+ 	So,  if the density of a screen is more than 160 dpi, for example 240dpi (large density).
+ 	1 dp = 240/160 pixels
+ 	1 dp = 1.5 pixels
+ 	
+ 	for a lower density screen, say 120dpi (low density) screen, 
+ 	1 dp = 120/160 pixels
+ 			= 0.75 pixels
+ 	
+ 	
+http://developer.android.com/guide/practices/screens_support.html
+
+For each screen size there is a minimum size for req for it be included in the 
+generalized size category.
+The size is represented in dp or density independent pixels
+which have a fixed length which is 1/160th of an inch.
+
+small 	 	426dp * 320dp (2.66 * 2 inch)
+medium  	470dp * 320dp (2.93 * 2 inch)
+large		640dp * 480dp (  4  * 3 inch)
+extra large 960dp * 720dp (  6  * 5 inch))
+
+moto g first gen would come in medium. Its resolution is 720 *1280 pixels and it is roughly 326 dpi
+So taking its density as 320 dpi, in dp it would be 360 *640 dp. 
+
+
+--------------------------------------
+Nesting Viewgroups
+nesting viewgroups is inefficient. Avoid as much as possible.
+
+We nest a linear layout containing save button and a new lock button in the existing linear layout view group.
+Then we add a onClick listener that has an intent to change activity back to imageActivity.
+
+
+------------------------------------------
+Creating a reset passpoints button
+we can do this using sharedPreferences file comman to activities
+
+we can also do it using
+-----------------------------------------------------
+Passing data to a an activity when switching activities using intent
+i.putExtra()
+
+and in the activity that has been switched over to 
+Bundle bundle = getIntent.getExtras();
+bundle.getBoolean(key)
+-however here we still have to use the activity specific preference file
+
+------------------------------------
+
+Retrieveing an image frmoa gallery.
+
+we get a galelry URI.
+
+We the use a function 
+getContentResolver().query(galleryURI,colmuns)
+
+where columns are the columns is a string array that stores the columsn of data that  are desired
+to be returned. the only column we want to be returned is "_data" which returns a regular android URI
+
+which we store in the preferences file.
+
+
+---------------------------------------
+Activity LifeCycle
+
+check online
+
+When the activity is paused we attempt to save the the text in the editText window
+to internal storage.
+
+
+--------------------------------------
+Testin / Checks
+
+Landsscape/Portrainmode switch
+
+when a claa comes
+
+when switchto another application and back
+
+check multiple phones/emulators
+
+check min sdk, target sdk tha tyour app supoorts
+check screen sizes your app supports
+check permission your app needs
+uses feauter (mar k ture if absolutely req otherwise flase)
+
+USe feature use permission will affect users ability to see the applciation inthe marketplace
+
+deubggable flag should be false in the android manifest
+
+
+--------------------------------------------
+taking screenshots
+
+in the DDMS view, in the devices window, there is a camera button
+
+----------------------------------------------
+Export App adn Sign it with KeyStore
+
+
+Dont lose keysotre itherwise you cant upgrade oyur application
+
+You can use thi skeystore to sign multiple applciation
+
+You creata a key whihc can also be used fro signing multiple applciations and sign the applciation with it
+---------------------------------------------
+
+Menus Action Bar
+
+Creating submenu
+create an item and create a menu item within it
+
+Group
+Create a group and items within it. You can then control the behaviour of all the items in th egroup together.
+set Visibilty or enabling disabling the buttons.
+
+order the items using order in category
+
+Show as Action
+viz show directly on the bar
+
+
+in the java layer you can hide the action bar completely
+getActionBar() into an ActionBar object and then do bar.hide()
+also, you can hide the Home button and title if you dont want that
+bar.setDisplayShowHomeEnabled(false);
+		bar.setDisplayShowTitleEnabled(false);
+
